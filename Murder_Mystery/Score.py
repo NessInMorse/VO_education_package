@@ -65,26 +65,53 @@ class Eindstand:
                 group_name = ""
 
         points = 0
+
         # Punten zelf
-        score_answers = int(
-            input("Hoeveel punten heeft het groepje in totaal behaald?\n"))
+        score_answers = -1
+
+        while score_answers == -1:
+                score_answers = input("Hoeveel punten heeft het groepje in totaal behaald?\n")
+                score_answers = self.return_number(score_answers)
 
         # Placement
-        # [20, 15, 10, 5, 0]
         options = [20, 15, 10, 5, 0]
-        p = int(input("Wat is de placement van het groepje? [1-5]\n"))
-        if p < 1 or p > 5:
-            p = 5
+
+        p = -1
+        while p == -1:
+                p = input("Wat is de placement van het groepje? [1-5]\n")
+                p = self.validate_number(n, [1, 2, 3, 4, 5])
+                if p == -1:
+                        print("\n\nLijkt er op dat je een verkeerde input hebt gegeven, probeer het opnieuw\n\n")
         placement = options[p - 1]
 
         # Bonus (hint kaartjes)
         # 5 * n kaartjes
-        n = int(input("Hoeveel hint kaartjes zijn er nog over? [0-3]\n"))
+        n = -1
+        while n == -1:
+                n = input("Hoeveel hint kaartjes zijn er nog over? [0-3]\n")
+                n = self.validate_number(n, [0, 1, 2, 3])
+                if n == -1:
+                        print("\n\nLijkt er op dat je een verkeerde input hebt gegeven, probeer het opnieuw\n\n")
 
         # total
         points = score_answers + placement + 5 * n
 
         self.groups[group_name][exercise] = points
+
+
+
+    def validate_number(self, n, options):
+        if n.isdigit():
+                if int(n) in options:
+                        return int(n)
+        return -1
+
+    def return_number(self, n):
+        if n.isdigit():
+                if int(n) > 0:
+                        return int(n)
+        return -1
+
 
     def writeFile(self):
         infile = open("groeps_punten.tsv", "w")
