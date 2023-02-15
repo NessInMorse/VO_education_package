@@ -66,17 +66,22 @@ class Eindstand:
                 # Placement
                 # [20, 15, 10, 5, 0]
                 options = [20, 15, 10, 5, 0]
-                placement = 0
+                p = int(input("Wat is de placement van het groepje? [0-4]\n"))
+                if p < 0 or  p > 4:
+                        p = 4
+                placement = options[p]
 
                 # Bonus (hint kaartjes)
                 # 5 * n kaartjes
+                n = int(input("Hoeveel hint kaartjes zijn er nog over?\n"))
+
+
 
 
                 # total
-                points = score_answers + placement + 0
+                points = score_answers + placement + 5 * n
 
-
-                print("Yo lekker gedaan")
+                self.groups[group_name][exercise] = points
 
         def writeFile(self):
                 infile = open("groeps_punten.tsv", "w")
