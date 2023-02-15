@@ -66,14 +66,14 @@ class Eindstand:
                 # Placement
                 # [20, 15, 10, 5, 0]
                 options = [20, 15, 10, 5, 0]
-                p = int(input("Wat is de placement van het groepje? [0-4]\n"))
-                if p < 0 or  p > 4:
-                        p = 4
-                placement = options[p]
+                p = int(input("Wat is de placement van het groepje? [1-5]\n"))
+                if p < 1 or  p > 5:
+                        p = 5
+                placement = options[p-1]
 
                 # Bonus (hint kaartjes)
                 # 5 * n kaartjes
-                n = int(input("Hoeveel hint kaartjes zijn er nog over?\n"))
+                n = int(input("Hoeveel hint kaartjes zijn er nog over? [0-3]\n"))
 
 
 
