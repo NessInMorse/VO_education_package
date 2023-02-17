@@ -1,4 +1,5 @@
 from bokeh.io import show
+from bokeh.palettes import Category10
 from bokeh.plotting import figure
 
 
@@ -32,12 +33,13 @@ class Eindstand:
         self.optie_menu()
 
     def optie_menu(self):
+        print("\nLET OP: MAX 10 GROEPEN, ANDERS Category10 (line 2 en 135) "
+              "AANPASSEN NAAR Category20 ")
         menu_choice = ""
         while menu_choice != "x":
-            menu_choice = ""
             while not menu_choice:
                 menu_choice = input(
-                    "Welkom, wat voor dingen zou je willen doen?\n"
+                    "\nWelkom, wat voor dingen zou je willen doen?\n"
                     "1) Een nieuwe groepsnaam invullen\n"
                     "2) Punten invullen voor opdracht 1\n"
                     "3) Punten invullen voor opdracht 2\n"
@@ -51,6 +53,7 @@ class Eindstand:
             elif menu_choice == "3" and self.groups:
                 self.add_exercise_points(1)
             self.plot()
+            menu_choice = ""
         # self.writeFile()
 
     def check_valid_group_name(self, new_group):
@@ -73,14 +76,11 @@ class Eindstand:
         group_name = ""
         newline = "\n"
         while not group_name:
-            print(
-                f"Dit zijn de verschillende groepen:\n"
-                f"{f'{newline}'.join(self.groups.keys())}")
+            print(f"Dit zijn de verschillende groepen:\n"
+                  f"{f'{newline}'.join(self.groups.keys())}")
             group_name = input("\nGeef de naam van jullie groep:\n").lower()
             if group_name not in self.groups:
                 group_name = ""
-
-        # points = 0
 
         # Punten zelf
         score_answers = -1
@@ -128,16 +128,19 @@ class Eindstand:
         infile.close()
 
     def plot(self):
-        # scores = [sum(self.groups[key]) for key in self.groups.keys()]
-        # groupnames = list(self.groups.keys())
         scores = sorted([sum(self.groups[key]) for key in self.groups.keys()],
                         reverse=True)
         groupnames = sorted(list(self.groups.keys()),
                             key=lambda x: sum(self.groups[x]), reverse=True)
-        source = {'x': groupnames, 'y': scores}
-        p = figure(x_range=groupnames, height=350, title="Score!",
-                   toolbar_location=None, tools="")
-        p.vbar(x=source["x"], top=source["y"], width=0.9)
+        colors = {key: Category10[10][i] for i, key in
+                  enumerate(self.groups.keys())}
+        col_sort = [colors[key] for key in groupnames]
+
+        source = {'x': groupnames, 'y': scores, 'col': col_sort}
+        tooltips = [("Aantal punten", "@y")]
+        p = figure(x_range=groupnames, height=500, title="Score!",
+                   toolbar_location=None, tooltips=tooltips)
+        p.vbar(x="x", top="y", width=0.9, color="col", source=source)
         p.xgrid.grid_line_color = None
         p.y_range.start = 0
         show(p)
