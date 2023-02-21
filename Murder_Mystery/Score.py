@@ -37,6 +37,7 @@ class Eindstand:
               "AANPASSEN NAAR Category20 ")
         menu_choice = ""
         while menu_choice != "x":
+            menu_choice = ""
             while not menu_choice:
                 menu_choice = input(
                     "\nWelkom, wat voor dingen zou je willen doen?\n"
@@ -53,7 +54,6 @@ class Eindstand:
             elif menu_choice == "3" and self.groups:
                 self.add_exercise_points(1)
             self.plot()
-            menu_choice = ""
         # self.writeFile()
 
     def check_valid_group_name(self, new_group):
