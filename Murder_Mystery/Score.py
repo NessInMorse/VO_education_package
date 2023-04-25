@@ -1,5 +1,5 @@
 from bokeh.io import show
-from bokeh.palettes import Category10
+from bokeh.palettes import Category20 as Kleurenset
 from bokeh.plotting import figure
 
 
@@ -44,16 +44,18 @@ class Eindstand:
                     "1) Punten invullen voor opdracht 1\n"
                     "2) Punten invullen voor opdracht 2\n"
                     "3) Een nieuwe groepsnaam invullen\n"
+                    "4) Show het plotje\n"
                     "x) Eindig het script\n").lower()
                 menu_choice = check_valid_input(menu_choice,
-                                                ["1", "2", "3", "x"])
+                                                ["1", "2", "3", "4", "x"])
             if menu_choice == "1" and self.groups:
                 self.add_exercise_points(0)
             elif menu_choice == "2" and self.groups:
                 self.add_exercise_points(1)
             elif menu_choice == "3":
                 self.add_group()
-            self.plot()
+            elif menu_choice == "4":
+                self.plot()
         # self.writeFile()
 
     def check_valid_group_name(self, new_group):
@@ -98,14 +100,15 @@ class Eindstand:
         options = [20, 15, 10, 5, 0]
 
         p = -1
-        while p == -1:
+        placement = 0
+        while p == -1 and exercise != 1:
             p = input("Wat is de placement van het groepje? [1-5]\n")
             p = validate_number(p, [1, 2, 3, 4, 5])
             if p == -1:
                 print(
                     "\n\nLijkt er op dat je een verkeerde input hebt "
                     "gegeven, probeer het opnieuw\n\n")
-        placement = options[p - 1]
+            placement = options[p - 1]
 
         # Bonus (hint kaartjes)
         # 5 * n kaartjes
@@ -136,7 +139,7 @@ class Eindstand:
                         reverse=True)
         groupnames = sorted(list(self.groups.keys()),
                             key=lambda x: sum(self.groups[x]), reverse=True)
-        colors = {key: Category10[10][i] for i, key in
+        colors = {key: Kleurenset[10][i] for i, key in
                   enumerate(self.groups.keys())}
         col_sort = [colors[key] for key in groupnames]
 
